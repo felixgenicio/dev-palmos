@@ -54,7 +54,7 @@ def docs_section():
         f'<li><a href="{quote(path)}">{html.escape(title)}</a></li>' for title, path in PUBLISHED
     )
     return (
-        '<section class="docs"><h2 id="online-documentation">Online Documentation</h2>'
+        '<section class="docs"><h3 id="online-documentation">Online Documentation</h3>'
         "<p>Original HTML documentation from the archive, readable directly in the browser:</p>"
         f"<ul>{links}</ul></section>"
     )
@@ -121,14 +121,16 @@ nav a {{ margin:0 10px; }}
 .browse summary {{ cursor:pointer; }}
 .dir {{ font-weight:600; }}
 .meta {{ color:var(--muted); font-size:.85em; margin-left:8px; white-space:nowrap; }}
+.docs {{ margin:24px 0 32px; padding:4px 20px 8px; background:var(--card); border:1px solid var(--line); border-radius:8px; }}
+.docs h3 {{ margin:14px 0 4px; }}
+.docs p {{ margin:0 0 6px; color:var(--muted); }}
 footer {{ margin-top:48px; color:var(--muted); font-size:.9em; text-align:center; }}
 </style>
 </head>
 <body>
 <main>
 {readme}
-{docs}
-<nav><a href="#online-documentation">Online documentation</a><a href="#browse-the-archive">Browse the archive</a><a href="https://github.com/{repo}">View on GitHub</a></nav>
+<nav><a href="#browse-the-archive">Browse the archive</a><a href="https://github.com/{repo}">View on GitHub</a></nav>
 <section class="browse">
 <h2 id="browse-the-archive">Browse the Archive</h2>
 <p>Every file is hosted in the <a href="https://github.com/{repo}">GitHub repository</a>.
@@ -154,7 +156,10 @@ def main():
             (OUT / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, OUT / f)
     readme = markdown.markdown((ROOT / "README.md").read_text(encoding="utf-8"), extensions=["extra"])
-    page = TEMPLATE.format(readme=readme, docs=docs_section(), tree=tree(ROOT), repo=REPO)
+    # Show the online documentation links right after the README's tagline.
+    tagline_end = readme.index("</p>", readme.index("<strong>")) + len("</p>")
+    readme = readme[:tagline_end] + docs_section() + readme[tagline_end:]
+    page = TEMPLATE.format(readme=readme, tree=tree(ROOT), repo=REPO)
     (OUT / "index.html").write_text(page, encoding="utf-8")
     (OUT / ".nojekyll").touch()
     print(f"Wrote {OUT / 'index.html'} ({len(page) // 1024} KB)", file=sys.stderr)
