@@ -8,7 +8,7 @@
 
 A historical collection of Palm OS development resources, including SDKs, technical documentation, developer conference presentations, source code, utilities, examples, and other materials accumulated during the early years of mobile computing.
 
-Much of this material has been sitting on hard drive backups for more than 25 years. Rather than allowing it to disappear into digital obscurity, I have decided to make it available to the community for historical preservation, research, and educational purposes.
+Much of this material has been sitting on hard drive backups for more than 25 years. Rather than allowing it to disappear into digital obscurity, it is made available to the community for historical preservation, research, and educational purposes.
 
 Palm OS played an important role in the evolution of mobile computing, long before smartphones became ubiquitous. Its efficient architecture, compact applications, and innovative developer ecosystem demonstrated what could be accomplished with extremely limited hardware resources.
 
@@ -16,9 +16,9 @@ Today, there is renewed interest in preserving, emulating, and even reviving the
 
 ## About This Archive
 
-This repository contains approximately **1 GB of historical Palm OS development material**, collected over many years of working with the platform.
+This repository contains approximately **1 GB of historical Palm OS development material**, collected over many years of Palm OS development.
 
-The archive includes a mixture of publicly distributed development resources, personal development material, technical references, and historical artifacts.
+The archive includes a mixture of publicly distributed development resources, development material, technical references, and historical artifacts.
 
 Where possible, files have been preserved in their original form rather than modified to accommodate modern development environments.
 
@@ -45,7 +45,7 @@ To avoid distributing proprietary platform images and commercial applications, t
 - Palm OS ROM images and firmware dumps.
 - Commercial applications and games distributed without permission.
 - Palm OS simulator and emulator binaries.
-- Other material that I felt should not be redistributed publicly.
+- Other material that should not be redistributed publicly.
 
 Developers interested in running Palm OS software should obtain the necessary system images and runtime environments from appropriately authorized sources.
 
@@ -56,14 +56,6 @@ Palm OS emerged during a period when mobile computing was defined by severe hard
 Early devices operated with processors running at a fraction of today's clock speeds, memory measured in kilobytes or a few megabytes, and displays with extremely limited resolution and color capabilities. Despite those limitations, the platform supported a remarkable ecosystem of applications, games, productivity tools, and developer innovations.
 
 Developers learned to work directly with the operating system, carefully manage memory, optimize graphics, minimize storage requirements, and extract maximum performance from constrained hardware. Many of the engineering principles involved remain relevant today, particularly in embedded systems, microcontrollers, and resource-constrained IoT devices. Preserving these materials provides an opportunity to study how those challenges were approached and solved.
-
-## A Personal Connection
-
-My involvement with Palm OS goes back to the early days of the platform, when developing software for handheld devices required a very different mindset from modern application development.
-
-Over the years, I worked on applications, games, low-level programming techniques, development tools, and experiments that explored the capabilities and limitations of the platform. Some of that work involved pushing Palm OS hardware well beyond its intended use, including emulation, graphics programming, and performance optimization. The files in this repository were collected during that period, alongside resources obtained through the wider Palm OS developer community.
-
-For me, this archive is both a technical resource and a personal reminder of an important period in computing history. It is also a way to give something back to a community that continues to appreciate the ingenuity of these early mobile systems.
 
 ## Using the Archive
 
@@ -96,7 +88,7 @@ The collection contains resources originating from different individuals, compan
 - Inclusion in this archive does not grant additional rights to redistribute, modify, or commercially exploit the material.
 - Material is provided for historical reference, research, and educational purposes, subject to applicable copyright law.
 
-Any source code for which I personally hold the necessary rights may be made available under a separate license, identified alongside the relevant files. If you are a copyright holder and believe material has been included that should not be publicly distributed, please open a GitHub issue identifying the relevant files. Legitimate concerns will be reviewed, and material can be removed where appropriate.
+Any source code released under a specific license will have that license identified alongside the relevant files. If you are a copyright holder and believe material has been included that should not be publicly distributed, please open a GitHub issue identifying the relevant files. Legitimate concerns will be reviewed, and material can be removed where appropriate.
 
 ## Contributions
 
@@ -129,19 +121,3 @@ The history of computing is not only written by the companies that created the h
 Palm OS represents an era when a small amount of memory, a modest processor, and a clever piece of code could produce something remarkable. Much of that knowledge now exists only in aging backups, forgotten websites, archived mailing lists, and personal collections. If even a small part of this archive helps someone understand the platform, recover a forgotten technique, restore an old application, or build something new, then preserving it will have been worthwhile.
 
 **Keep the history alive.**
-
-## About the Author
-
-This archive is maintained by **Aaron Ardiri**, a software engineer, technology entrepreneur, and author whose work spans early handheld computing, mobile platforms, embedded systems, and software architecture.
-
-Having previously released source code from his Palm OS and VTOS development projects, this archive represents a further effort to preserve the tools, knowledge, and technical history of that era.
-
-Aaron is also the author of **Technology, Entrepreneurship and the Reality of Building Systems** and a few titles that explores the history of computing, the engineering behind modern technology, and the practical realities of building software and hardware systems.
-
-**Books, publications, and more:** [www.ardiri.com](https://www.ardiri.com)
-
----
-
-*Collected and preserved by Aaron Ardiri.*
-
-*Originally accumulated during the Palm OS development era and made available for historical preservation and educational reference.*
