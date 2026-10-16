@@ -19,6 +19,13 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "_site"
 REPO = os.environ.get("GITHUB_REPOSITORY", "felixgenicio/dev-palmos")
 BRANCH = os.environ.get("GITHUB_REF_NAME", "main")
+# HTML documentation published as-is on the site, at the same relative path.
+PUBLISHED = [
+    ("The Zen of Palm", "palmos-doc/!zen_of_palm/index.html"),
+    ("Palm OS User Interface Guidelines", "palmos-doc/!ui_guidelines/index.html"),
+    ("Palm OS 3.5 Include File Changes", "palmos-doc/palmos-3_5/IncsFileChanges.html"),
+]
+PUBLISHED_DIRS = ["palmos-doc/!zen_of_palm", "palmos-doc/!ui_guidelines"]
 SKIP = {".git", ".github", "_site", "images", "README.md", ".gitignore"}
 
 
@@ -37,6 +44,22 @@ def dir_size(path):
     return sum(f.stat().st_size for f in path.rglob("*") if f.is_file())
 
 
+def is_published(rel):
+    rel = rel.as_posix()
+    return any(rel == f for _, f in PUBLISHED) or any(rel.startswith(d + "/") for d in PUBLISHED_DIRS)
+
+
+def docs_section():
+    links = "".join(
+        f'<li><a href="{quote(path)}">{html.escape(title)}</a></li>' for title, path in PUBLISHED
+    )
+    return (
+        '<section class="docs"><h2 id="online-documentation">Online Documentation</h2>'
+        "<p>Original HTML documentation from the archive, readable directly in the browser:</p>"
+        f"<ul>{links}</ul></section>"
+    )
+
+
 def tree(path):
     entries = sorted(
         (p for p in path.iterdir() if p.name not in SKIP and not p.name.startswith(".")),
@@ -53,6 +76,12 @@ def tree(path):
                 f'<summary><span class="dir">{name}/</span>'
                 f'<span class="meta">{count} files · {human(dir_size(p))}</span></summary>'
                 f'{tree(p)}</details></li>'
+            )
+        elif p.suffix.lower() in (".html", ".htm") and is_published(rel):
+            items.append(
+                f'<li class="file"><a href="{quote(rel.as_posix())}">{name}</a>'
+                f'<span class="meta">{human(p.stat().st_size)} · '
+                f'<a href="{url("blob", rel)}">source</a></span></li>'
             )
         else:
             items.append(
@@ -98,7 +127,8 @@ footer {{ margin-top:48px; color:var(--muted); font-size:.9em; text-align:center
 <body>
 <main>
 {readme}
-<nav><a href="#browse-the-archive">Browse the archive</a><a href="https://github.com/{repo}">View on GitHub</a></nav>
+{docs}
+<nav><a href="#online-documentation">Online documentation</a><a href="#browse-the-archive">Browse the archive</a><a href="https://github.com/{repo}">View on GitHub</a></nav>
 <section class="browse">
 <h2 id="browse-the-archive">Browse the Archive</h2>
 <p>Every file is hosted in the <a href="https://github.com/{repo}">GitHub repository</a>.
@@ -117,8 +147,14 @@ def main():
         shutil.rmtree(OUT)
     OUT.mkdir()
     shutil.copytree(ROOT / "images", OUT / "images")
+    for d in PUBLISHED_DIRS:
+        shutil.copytree(ROOT / d, OUT / d)
+    for _, f in PUBLISHED:
+        if not (OUT / f).exists():
+            (OUT / f).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / f, OUT / f)
     readme = markdown.markdown((ROOT / "README.md").read_text(encoding="utf-8"), extensions=["extra"])
-    page = TEMPLATE.format(readme=readme, tree=tree(ROOT), repo=REPO)
+    page = TEMPLATE.format(readme=readme, docs=docs_section(), tree=tree(ROOT), repo=REPO)
     (OUT / "index.html").write_text(page, encoding="utf-8")
     (OUT / ".nojekyll").touch()
     print(f"Wrote {OUT / 'index.html'} ({len(page) // 1024} KB)", file=sys.stderr)
