@@ -8,6 +8,7 @@ so the ~1 GB archive is not duplicated into the Pages artifact.
 
 import html
 import os
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -42,6 +43,24 @@ def url(kind, rel):
 
 def dir_size(path):
     return sum(f.stat().st_size for f in path.rglob("*") if f.is_file())
+
+
+def to_utf8(path):
+    """Re-encode a published HTML page as UTF-8.
+
+    GitHub Pages serves every page with a "charset=utf-8" header, which
+    overrides the ISO-8859-1 <meta> tag in the original Palm docs and turns
+    characters such as non-breaking spaces into replacement symbols.
+    """
+    data = path.read_bytes()
+    try:
+        data.decode("utf-8")
+        return
+    except UnicodeDecodeError:
+        pass
+    text = data.decode("cp1252", errors="replace")
+    text = re.sub(r"charset=[\"']?[\w-]+", "charset=utf-8", text, flags=re.I)
+    path.write_text(text, encoding="utf-8")
 
 
 def is_published(rel):
@@ -155,6 +174,8 @@ def main():
         if not (OUT / f).exists():
             (OUT / f).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / f, OUT / f)
+    for page in (OUT / "palmos-doc").rglob("*.htm*"):
+        to_utf8(page)
     readme = markdown.markdown((ROOT / "README.md").read_text(encoding="utf-8"), extensions=["extra"])
     # Show the online documentation links right after the README's tagline.
     tagline_end = readme.index("</p>", readme.index("<strong>")) + len("</p>")
